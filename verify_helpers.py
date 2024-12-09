@@ -124,8 +124,28 @@ def find_function_call(lines, function_name):
     return function_calls
 
 
+def retrieve_variable_values(filepath):
+    with open(filepath, 'r') as file:
+        tree = ast.parse(file.read(), filename=filepath)
+    
+    variables = {}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    try:
+                        value = ast.literal_eval(node.value)
+                        variables[target.id] = value
+                    except ValueError:
+                        try:
+                            expression_code = compile(ast.Expression(node.value), '<ast>', 'eval')
+                            value = eval(expression_code, {}, variables)
+                            variables[target.id] = value
+                        except Exception:
+                            variables[target.id] = "Unresolvable dynamic value"
+    
+    return variables
+    
+
 # create function that can do a LIKE check
 # such as specifying 'np' and it grabs all lines that are like 'np.random.rand' and 'np.random.randint'
-
-# create function that can lookup a variable and get it's initial value
-# might need to be recursive if specified variable is initialized using two other variables for example
