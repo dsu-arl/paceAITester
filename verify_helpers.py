@@ -77,7 +77,6 @@ def extract_python_details(filepath):
         tree = ast.parse(file.read(), filename=filepath)
 
     lines = []
-    variables = []
     for node in ast.walk(tree):
         # Handle assignment: variable = function(...)
         if isinstance(node, ast.Assign) and isinstance(node.value, ast.Call):
@@ -113,22 +112,8 @@ def extract_python_details(filepath):
                 'args': args,
                 'kwargs': kwargs
             })
-    
-        elif isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name):
-                    # Handle Constant values
-                    if isinstance(node.value, ast.Constant):  
-                        value = node.value.value  # Directly get the value
-                    else:
-                        value = None  # Handle non-Constant cases
-                    
-                    variables.append({
-                        'variable': target.id,
-                        'value': value
-                    })
 
-    return lines, variables
+    return lines
 
 
 def find_function_call(lines, function_name):
