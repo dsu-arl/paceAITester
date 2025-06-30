@@ -24,10 +24,10 @@ class ValidationError(Exception):
 class CodeValidator:
     """Validates user-submitted Python code for specific function calls and parameters."""
 
-    def __init__(self, script_path: str, steps: List[Tuple[str, FunctionCallSpec]], variables: Dict):
+    def __init__(self, script_path: str, variables: List[str]):
         self.script_path = script_path
-        self.variables = variables
-        self.steps = steps
+        self.variables: Dict[str, None] = dict.fromkeys(variables, None)
+        self.steps = []
         self.lines = self._extract_python_details()
     
     def _extract_python_details(self) -> List[Dict]:
