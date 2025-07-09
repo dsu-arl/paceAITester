@@ -1,6 +1,7 @@
 #!/usr/bin/exec-suid --real -- /usr/bin/python -I
 
 import ast
+from .datatypes import FunctionCall
 
 
 def extract_python_details(filepath):
@@ -76,3 +77,7 @@ def retrieve_variable_values(filepath):
                             variables[target.id] = "Unresolvable dynamic value"
     
     return variables
+
+
+def output_not_assigned_to_variable(function_call: FunctionCall) -> bool:
+    return function_call.variable is None
