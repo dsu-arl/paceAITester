@@ -2,6 +2,7 @@
 
 import ast
 from .datatypes import FunctionCall
+from typing import List, Dict
 
 
 def extract_python_details(filepath):
@@ -56,7 +57,7 @@ def find_function_call(lines, function_name):
     return function_calls
 
 
-def retrieve_variable_values(filepath):
+def retrieve_variable_values(filepath: str) -> Dict:
     with open(filepath, 'r') as file:
         tree = ast.parse(file.read(), filename=filepath)
     
@@ -81,3 +82,7 @@ def retrieve_variable_values(filepath):
 
 def output_not_assigned_to_variable(function_call: FunctionCall) -> bool:
     return function_call.variable is None
+
+
+def function_not_called(function_calls: List[Dict]) -> bool:
+    return len(function_calls) == 0
