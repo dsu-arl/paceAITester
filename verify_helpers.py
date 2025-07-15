@@ -1,8 +1,38 @@
 #!/usr/bin/exec-suid --real -- /usr/bin/python -I
 
+import sys
+sys.path.append('/challenge')
+
 import ast
+from .config import GREEN_TEXT_CODE, RED_TEXT_CODE, RESET_CODE
 from .datatypes import FunctionCall
 from typing import List, Dict
+
+
+def print_flag() -> None:
+    try:
+        with open("/flag", "r") as f:
+            print(f.read())
+    except FileNotFoundError:
+        print("Error: Flag file not found.")
+
+
+def run_verification(checks: list[callable]) -> None:
+    """
+    Runs a sequence of validation checks, prints results, and handles success/failure.
+
+    :param checks: List of check functions, each return (is_correct: bool, error_msg: str).
+    """
+    for step, check_func in enumerate(checks, 1):
+        is_correct, error_msg = check_func()
+        if not is_correct:
+            print(f'{RED_TEXT_CODE}Step {step} Failed{RESET_CODE}')
+            print(error_msg)
+            sys.exit(1)
+        print(f'{GREEN_TEXT_CODE}Step {step} Passed{RESET_CODE}')
+    
+    print('Congratulations! You have passed this challenge! Here is your flag:')
+    print_flag()
 
 
 def extract_python_details(filepath):
