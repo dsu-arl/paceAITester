@@ -93,6 +93,16 @@ class StatementParser(ast.NodeVisitor):
 
         return variables
 
+    def parse_statement(self, statement: str) -> Statement:
+        tree = ast.parse(statement)
+        parsed_statements = []
+        for node in tree.body:
+            stmt = self._process_statement(node)
+            if stmt:
+                parsed_statements.append(stmt)
+            self.visit(node)
+        return parsed_statements[0]
+
     def _process_statement(self, node: ast.AST) -> Optional[Statement]:
         statement_parsers = {
             ast.Import: self._parse_import_statement,
