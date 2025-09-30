@@ -9,8 +9,7 @@ sys.path.append("/challenge")
 import ast
 from typing import Dict, List, Optional
 
-# from .datatypes import (
-from datatypes import (
+from .datatypes import (
     Statement,
     ImportStatement,
     ImportFromStatement,
