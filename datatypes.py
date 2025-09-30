@@ -8,7 +8,7 @@ sys.path.append("/challenge")
 
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 
 @dataclass
@@ -150,22 +150,6 @@ class IfStatement(Statement):
 
 
 @dataclass
-class AssignStatement(Statement):
-    """Dataclass for assignment statements.
-
-    Args:
-        Statement (class): Base class for statements.
-
-    Attributes:
-        targets (List[str]): List of target variables to store value in.
-        value (str): Value to store in variables.
-    """
-
-    targets: List[str]
-    value: str
-
-
-@dataclass
 class FunctionCallStatement(Statement):
     """Dataclass for function call statements.
 
@@ -179,6 +163,22 @@ class FunctionCallStatement(Statement):
 
     func: str
     args: List[str] = field(default_factory=list)
+
+
+@dataclass
+class AssignStatement(Statement):
+    """Dataclass for assignment statements.
+
+    Args:
+        Statement (class): Base class for statements.
+
+    Attributes:
+        targets (List[str]): List of target variables to store value in.
+        value (Union[str, FunctionCallStatement]): Value to store in variables.
+    """
+
+    targets: List[str]
+    value: Union[str, FunctionCallStatement]
 
 
 @dataclass
