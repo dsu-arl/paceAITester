@@ -8,7 +8,7 @@ sys.path.append("/challenge")
 
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 
 @dataclass
@@ -159,12 +159,12 @@ class FunctionCallStatement(Statement):
     Attributes:
         func (str): Name of the function called.
         args (List[str]): List of positional parameters passed to the function.
-        kwargs (List[Tuple[str, str]]): List of keyword arguments as (name, value) pairs
+        kwargs (Dict[str, str]): Dictionary of keyword arguments as name-value pairs.
     """
 
     func: str
     args: List[str] = field(default_factory=list)
-    kwargs: List[Tuple[str, str]] = field(default_factory=list)
+    kwargs: Dict[str, str] = field(default_factory=list)
 
 
 @dataclass

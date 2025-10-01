@@ -200,7 +200,7 @@ class StatementParser(ast.NodeVisitor):
     def _parse_function_call(node: ast.AST) -> FunctionCallStatement:
         func = ast.unparse(node.value.func)
         args = [ast.unparse(arg) for arg in node.value.args]
-        kwargs = [(kw.arg, ast.unparse(kw.value)) for kw in node.value.keywords]
+        kwargs = {kw.arg: ast.unparse(kw.value) for kw in node.value.keywords}
         return FunctionCallStatement(func=func, args=args, kwargs=kwargs)
 
     @staticmethod
