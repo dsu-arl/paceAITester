@@ -158,11 +158,13 @@ class FunctionCallStatement(Statement):
 
     Attributes:
         func (str): Name of the function called.
-        args (List[str]): List of parameters passed to the function.
+        args (List[str]): List of positional parameters passed to the function.
+        kwargs (List[Tuple[str, str]]): List of keyword arguments as (name, value) pairs
     """
 
     func: str
     args: List[str] = field(default_factory=list)
+    kwargs: List[Tuple[str, str]] = field(default_factory=list)
 
 
 @dataclass
