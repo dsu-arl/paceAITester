@@ -93,9 +93,11 @@ def find_function_calls(
             isinstance(statement, FunctionCallStatement)
             and statement.func == function_name
         )
-        is_assign_statement = isinstance(
-            statement, AssignStatement
-        ) and statement.value.startswith(f"{function_name}(")
+        is_assign_statement = (
+            isinstance(statement, AssignStatement)
+            and isinstance(statement.value, FunctionCallStatement)
+            and statement.value.func == function_name
+        )
         if is_function_call_statement or is_assign_statement:
             function_calls.append(statement)
     return function_calls
