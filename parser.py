@@ -189,7 +189,17 @@ class StatementParser(ast.NodeVisitor):
         )
 
     def _parse_assign_statement(self, node: ast.AST) -> AssignStatement:
-        targets = [ast.unparse(target) for target in node.targets]
+        targets = []
+        for target in node.targets:
+            if isinstance(target, ast.Tuple):
+                for elt in target.elts:
+                    if isinstance(elt, ast.Name):
+                        targets.append(elt.id)
+                    else:
+                        targets.append(ast.unparse(elt))
+            else:
+                targets.append(ast.unparse(target))
+
         if isinstance(node.value, ast.Call):
             value = self._parse_function_call(ast.Expr(value=node.value))
         else:
